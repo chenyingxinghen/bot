@@ -1,0 +1,49 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+.env
+.env.*
+!.env.example
+
+runtime/logs/*
+!runtime/logs/.gitkeep
+
+data/*.db
+data/*.db-*
+data/*.db.*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+
+logs/qbot_stderr.log
+logs/qbot_stdout.log
+data/backups/memory_clone_before_bocchi_cleanup_20260802_194749.db
+data/backups/memory_clone_before_bocchi_cleanup_20260802_194749.db-shm
+data/backups/memory_clone_before_bocchi_cleanup_20260802_194749.db-wal
+data/generated/gen_1785667627720_4a72269c.png
+.vscode/settings.json
+# 本地临时脚本目录（含硬编码个人路径）
+.cache_story/
+data/*
+# data/ 下需要版本化的文件：ComfyUI 工作流、三套模式提示词、角色绑定。
+# 这些同时被 tools/local_only_files.py 标记为 skip-worktree —— 云端保留一份
+# 模板记录，本地改动不推送。放行规则必须成对，否则新 clone 会缺失这些文件。
+!data/t2i.json
+!data/modes/
+!data/modes/*.txt
+!data/tavern_characters.json
+!data/modes_state.json
+# stickers 是用户本地表情包目录（个人收藏），不入库；但保留说明文档。
+# 该目录历史上曾被误跟踪，重建仓库时按ignore 规则排除。
+!data/stickers/
+data/stickers/*
+!data/stickers/README.md
+logs/*
+.workbuddy/*

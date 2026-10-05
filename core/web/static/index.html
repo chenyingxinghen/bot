@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f7fb">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="私人 AI 助手 Web 入口">
+  <title>私人助手</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="私人助手">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3.25a8.75 8.75 0 0 0-7.7 12.91L3.2 20.3a.75.75 0 0 0 .92.92l4.14-1.1A8.75 8.75 0 1 0 12 3.25Z"/><path class="spark" d="m12 7 .72 2.28L15 10l-2.28.72L12 13l-.72-2.28L9 10l2.28-.72L12 7Z"/></svg>
+        </span>
+        <span>
+          <strong>私人助手</strong>
+          <small id="status" data-state="idle">等待连接</small>
+        </span>
+      </div>
+      <button id="accountButton" class="account-button" type="button" aria-label="账号设置">
+        <span id="accountAvatar" class="avatar">访</span>
+        <span id="accountName">登录</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6.5 8 3.5 3.5L13.5 8"/></svg>
+      </button>
+    </header>
+
+    <main id="messages" class="messages" aria-live="polite" aria-label="聊天消息">
+      <section id="welcome" class="welcome">
+        <div class="welcome-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M16 4.5A11.5 11.5 0 0 0 5.88 21.46L4.5 26.5l5.04-1.38A11.5 11.5 0 1 0 16 4.5Z"/><path class="spark" d="m16 9 1.05 3.45L20.5 13.5l-3.45 1.05L16 18l-1.05-3.45-3.45-1.05 3.45-1.05L16 9Z"/></svg>
+        </div>
+        <h1>今天想聊点什么？</h1>
+        <p>支持连续对话、图片理解、角色模式和长期记忆。</p>
+        <div class="suggestions" aria-label="快捷指令">
+          <button type="button" data-prompt="/帮助">查看使用帮助</button>
+          <button type="button" data-prompt="/模式">切换对话模式</button>
+          <button type="button" data-prompt="/角色">选择当前角色</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="composer-wrap">
+      <form id="composer" class="composer">
+        <div id="previews" class="previews" aria-live="polite"></div>
+        <div class="compose-row">
+          <label class="icon-button upload-button" title="添加图片" aria-label="添加图片">
+            <input id="images" type="file" accept="image/*" multiple>
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </label>
+          <textarea id="text" rows="1" maxlength="12000" placeholder="输入消息，Enter 发送" autocomplete="off" aria-label="消息内容"></textarea>
+          <button id="send" class="send-button" type="submit" aria-label="发送消息" disabled>
+            <svg viewBox="0 0 24 24"><path d="m5 12 14-7-4.4 14-2.8-5.8L5 12Z"/><path d="m11.8 13.2 3.1-3.1"/></svg>
+          </button>
+        </div>
+      </form>
+      <p class="composer-hint">AI 生成内容仅供参考</p>
+    </footer>
+  </div>
+
+  <dialog id="authDialog" class="auth-dialog">
+    <div class="auth-card">
+      <button id="authClose" class="dialog-close" type="button" aria-label="关闭登录窗口">
+        <svg viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15"/></svg>
+      </button>
+      <div class="auth-heading">
+        <span class="auth-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3.25a8.75 8.75 0 0 0-7.7 12.91L3.2 20.3a.75.75 0 0 0 .92.92l4.14-1.1A8.75 8.75 0 1 0 12 3.25Z"/><path class="spark" d="m12 7 .72 2.28L15 10l-2.28.72L12 13l-.72-2.28L9 10l2.28-.72L12 7Z"/></svg>
+        </span>
+        <h2>连接私人助手</h2>
+        <p>登录后，对话和记忆将按账号独立保存。</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="账号操作">
+        <button type="button" class="tab active" data-tab="login" role="tab" aria-selected="true">登录</button>
+        <button type="button" class="tab" data-tab="register" role="tab" aria-selected="false">注册</button>
+      </div>
+
+      <form id="authForm" novalidate>
+        <label class="field">
+          <span>用户名</span>
+          <input id="username" type="text" autocomplete="username" minlength="3" maxlength="32" pattern="[A-Za-z0-9_]+" placeholder="3-32 位字母、数字或下划线" required>
+        </label>
+        <label class="field">
+          <span>密码</span>
+          <input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="至少 6 位" required>
+        </label>
+        <p id="authError" class="auth-error" role="alert"></p>
+        <button id="authSubmit" class="primary-button" type="submit">登录</button>
+      </form>
+      <p class="privacy-note">注册时会记录设备标识和 IP，用于限制重复注册。</p>
+    </div>
+  </dialog>
+
+  <div id="accountMenu" class="account-menu" hidden>
+    <div>
+      <strong id="menuUsername">未登录</strong>
+      <small>当前账号</small>
+    </div>
+    <button id="logoutButton" type="button">退出登录</button>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="./app.js"></script>
+</body>
+</html>
